@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blj.dao.TestMapper">
+    <resultMap id="doctorMap" type="com.blj.pojo.Doctor">
+        <id column="id" property="id"></id>
+        <result column="doct_code" property="doct_code"></result>
+        <result column="Initial" property="Initial"></result>
+    </resultMap>
+    <resultMap id="userMap" type="com.blj.pojo.User">
+        <result column="name" property="name"></result>
+        <result column="age" property="age"></result>
+    </resultMap>
+    <select id="selectDoctor" resultMap="doctorMap">
+        SELECT id,Initial,doct_code FROM rdhp_1
+    </select>
+    <update id="updateBatch" parameterType="java.util.List">
+
+        <foreach collection="list" item="doctor" index="index" open="" close="" separator=";">
+            update rdhp_1
+            <set>
+                doct_code=#{doctor.doct_code}
+            </set>
+            where id = ${doctor.id}
+        </foreach>
+    </update>
+    <update id="updateDoctor" parameterType="com.blj.pojo.Doctor">
+        UPDATE doctor SET  doct_code = #{doct_code} WHERE id = #{id}
+
+    </update>
+    <select id="selectUsers" resultMap="userMap">
+        SELECT  * FROM  user
+    </select>
+    <update id="updateBatchUsers" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close=""  separator=";">
+            UPDATE user
+            <set>
+                name=#{item.name},
+                age=#{item.age}
+            </set>
+        </foreach>
+    </update>
+</mapper>
